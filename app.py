@@ -9,7 +9,7 @@ from tensorflow.keras.applications.efficientnet import preprocess_input
 
 # ----------------- PAGE CONFIG -----------------
 st.set_page_config(
-    page_title="Waste Classification AI",
+    page_title="Waste Classification by Baon_Ningthoujam",
     page_icon="♻️",
     layout="centered"
 )
@@ -57,26 +57,30 @@ if uploaded_file:
     st.success(f"Prediction: {predicted_class}")
     st.info(f"Confidence: {confidence:.2f}%")
 
-    # ----------------- PROBABILITY TABLE -----------------
-    probs = prediction[0]
-    sorted_idx = np.argsort(probs)[::-1]
+   # ----------------- PROBABILITY TABLE -----------------
+probs = prediction[0]
+sorted_idx = np.argsort(probs)[::-1]
 
-    prob_table = {
-        "Class": [class_names[i] for i in sorted_idx],
-        "Probability (%)": np.round(probs[sorted_idx] * 100, 2)
-    }
+prob_table = {
+    "Class": [class_names[i] for i in sorted_idx],
+    "Probability (%)": np.round(probs[sorted_idx] * 100, 2)
+}
 
-    st.subheader("📊 Class Probabilities")
-    st.dataframe(prob_table)
+st.subheader("📊 Class Probabilities")
+st.table(prob_table)   # ✅ safer than dataframe in some versions
 
-    # ----------------- SOURCE LINK -----------------
-    st.divider()
+# ----------------- SOURCE LINK -----------------
+st.divider()
 
-    st.subheader("🔗 Source & Model Info")
+st.subheader("🔗 Source & Model Info")
 
-    st.link_button(
-        "📂 View Full Project Source Code",
-        "https://github.com/baronningthoujam109-maax/waste-classification-app"
-    )
+st.markdown(
+    """
+    📂 **Project Source Code:**  
+    https://github.com/baronningthoujam109-maax/waste-classification-app  
 
-    st.caption("Built using TensorFlow + EfficientNetB0 + Streamlit")
+    🧠 **Model:** EfficientNetB0 + TensorFlow  
+    """
+)
+
+st.caption("Built using TensorFlow + EfficientNetB0 + Streamlit")
