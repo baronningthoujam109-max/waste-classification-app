@@ -77,7 +77,7 @@ if uploaded_file is not None:
     st.markdown(
         """
         📂 **Project Source Code:**  
-        https://github.com/baronningthoujam109-maax/waste-classification-app  
+        https://github.com/baronningthoujam109-max/waste-classification-app  
 
         🧠 **Model:** EfficientNetB0 + TensorFlow  
         ♻️ **Task:** Waste Classification (Glass, Metal, Paper, Plastic, Cardboard, Trash)
