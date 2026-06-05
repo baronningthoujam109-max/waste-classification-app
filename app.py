@@ -9,7 +9,7 @@ from tensorflow.keras.applications.efficientnet import preprocess_input
 
 # ----------------- PAGE CONFIG -----------------
 st.set_page_config(
-    page_title="Waste Classification by Baon_Ningthoujam",
+    page_title="Waste Classification by Baron_Ningthoujam",
     page_icon="♻️",
     layout="centered"
 )
@@ -26,19 +26,19 @@ with open("class_names.json", "r") as f:
     class_names = json.load(f)
 
 # ----------------- UI -----------------
-st.title("♻️ Waste Classification by Baon_Ningthoujam")
+st.title("♻️ Waste Classification by Baron_Ningthoujam")
 st.write("Upload an image to classify waste type.")
 
 uploaded_file = st.file_uploader("Choose image", type=["jpg", "jpeg", "png"])
 
 # ----------------- PREDICTION -----------------
-if uploaded_file:
+if uploaded_file is not None:
 
-    # Show image
+    # Load image
     image = Image.open(uploaded_file).convert("RGB")
     st.image(image, caption="Uploaded Image", use_container_width=True)
 
-    # Preprocess
+    # Preprocess image
     img = np.array(image)
     img = cv2.resize(img, (224, 224))
     img = img.astype(np.float32)
@@ -53,34 +53,35 @@ if uploaded_file:
     predicted_class = class_names[predicted_index]
     confidence = float(np.max(prediction)) * 100
 
-    # Output
+    # ----------------- OUTPUT -----------------
     st.success(f"Prediction: {predicted_class}")
     st.info(f"Confidence: {confidence:.2f}%")
 
-   # ----------------- PROBABILITY TABLE -----------------
-probs = prediction[0]
-sorted_idx = np.argsort(probs)[::-1]
+    # ----------------- PROBABILITY TABLE -----------------
+    probs = prediction[0]
+    sorted_idx = np.argsort(probs)[::-1]
 
-prob_table = {
-    "Class": [class_names[i] for i in sorted_idx],
-    "Probability (%)": np.round(probs[sorted_idx] * 100, 2)
-}
+    prob_table = {
+        "Class": [class_names[i] for i in sorted_idx],
+        "Probability (%)": np.round(probs[sorted_idx] * 100, 2)
+    }
 
-st.subheader("📊 Class Probabilities")
-st.table(prob_table)   # ✅ safer than dataframe in some versions
+    st.subheader("📊 Class Probabilities")
+    st.table(prob_table)
 
-# ----------------- SOURCE LINK -----------------
-st.divider()
+    # ----------------- SOURCE INFO -----------------
+    st.divider()
 
-st.subheader("🔗 Source & Model Info")
+    st.subheader("🔗 Source & Model Info")
 
-st.markdown(
-    """
-    📂 **Project Source Code:**  
-    https://github.com/baronningthoujam109-maax/waste-classification-app  
+    st.markdown(
+        """
+        📂 **Project Source Code:**  
+        https://github.com/baronningthoujam109-maax/waste-classification-app  
 
-    🧠 **Model:** EfficientNetB0 + TensorFlow  
-    """
-)
+        🧠 **Model:** EfficientNetB0 + TensorFlow  
+        ♻️ **Task:** Waste Classification (Glass, Metal, Paper, Plastic, Cardboard, Trash)
+        """
+    )
 
-st.caption("Built using TensorFlow + EfficientNetB0 + Streamlit")
+    st.caption("Built using TensorFlow + EfficientNetB0 + Streamlit")
