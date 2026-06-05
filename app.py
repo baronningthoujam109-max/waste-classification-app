@@ -53,15 +53,10 @@ if uploaded_file:
         0
     )
 
-    img = cv2.resize(
-        img,
-        (224,224)
-    )
-
-    img = np.expand_dims(
-        img,
-        axis=0
-    )
+    img = cv2.resize(img, (224, 224))
+img = img.astype("float32") / 255.0
+img = np.expand_dims(img, axis=0)
+img = img.astype("float32") / 255.0
 
     prediction = model.predict(img)
 
