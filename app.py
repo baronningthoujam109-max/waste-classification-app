@@ -21,36 +21,62 @@ def load_model():
 
 model = load_model()
 
-# ----------------- CLASS NAMES -----------------
+# ----------------- LOAD CLASS NAMES -----------------
 with open("class_names.json", "r") as f:
     class_names = json.load(f)
 
 # ----------------- UI -----------------
-st.title("♻️ Waste Classification AI")
-st.write("Upload an image and get prediction.")
+st.title("♻️ Waste Classification by Baon_Ningthoujam")
+st.write("Upload an image to classify waste type.")
 
 uploaded_file = st.file_uploader("Choose image", type=["jpg", "jpeg", "png"])
 
 # ----------------- PREDICTION -----------------
 if uploaded_file:
 
+    # Show image
     image = Image.open(uploaded_file).convert("RGB")
     st.image(image, caption="Uploaded Image", use_container_width=True)
 
+    # Preprocess
     img = np.array(image)
     img = cv2.resize(img, (224, 224))
     img = img.astype(np.float32)
 
-    # MUST match training
     img = preprocess_input(img)
-
     img = np.expand_dims(img, axis=0)
 
+    # Predict
     prediction = model.predict(img, verbose=0)
 
     predicted_index = int(np.argmax(prediction))
     predicted_class = class_names[predicted_index]
     confidence = float(np.max(prediction)) * 100
 
+    # Output
     st.success(f"Prediction: {predicted_class}")
     st.info(f"Confidence: {confidence:.2f}%")
+
+    # ----------------- PROBABILITY TABLE -----------------
+    probs = prediction[0]
+    sorted_idx = np.argsort(probs)[::-1]
+
+    prob_table = {
+        "Class": [class_names[i] for i in sorted_idx],
+        "Probability (%)": np.round(probs[sorted_idx] * 100, 2)
+    }
+
+    st.subheader("📊 Class Probabilities")
+    st.dataframe(prob_table)
+
+    # ----------------- SOURCE LINK -----------------
+    st.divider()
+
+    st.subheader("🔗 Source & Model Info")
+
+    st.link_button(
+        "📂 View Full Project Source Code",
+        "https://github.com/baronningthoujam109-maax/waste-classification-app"
+    )
+
+    st.caption("Built using TensorFlow + EfficientNetB0 + Streamlit")
