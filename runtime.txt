@@ -1,1 +1,1 @@
-python-3.11
+EfficientNetB0 achieved high classification performance through transfer learning, reaching 98.21% test accuracy. Fine-tuning the final layers did not provide additional improvement, indicating that the pretrained ImageNet features were already highly effective for waste image classification.
