@@ -1,2 +1,2 @@
 [server]
-headless = true
+pythonVersion = "3.10"
