@@ -17,7 +17,7 @@ st.set_page_config(
 # ----------------- LOAD MODEL -----------------
 @st.cache_resource
 def load_model():
-    return tf.keras.models.load_model("waste_classifier.keras")
+    return tf.keras.models.load_model("efficientnetb0_waste.keras")
 
 model = load_model()
 
